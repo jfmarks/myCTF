@@ -9,8 +9,8 @@ app.use( function ( req, res, next ) {
     console.log( 'Request: Timestamp:', new Date().toLocaleString(), ', URL (' + url + '), PATH (' + routePath + ').' ) ;
     next();
 });
-
-app.use('/public/', express.static(path.join(__dirname, '')))
+app.use(express.static("public"))
+//app.use('/public/', express.static(path.join(__dirname, '')))
 app.listen(port, () => {
     console.log(`Server running on port ${port}...`)
 });

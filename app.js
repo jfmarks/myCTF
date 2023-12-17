@@ -10,7 +10,7 @@ app.use( function ( req, res, next ) {
     next();
 });
 
-app.use('/', express.static(path.join(__dirname, '')))
+app.use('/public/', express.static(path.join(__dirname, '')))
 app.listen(port, () => {
     console.log(`Server running on port ${port}...`)
 });

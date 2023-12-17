@@ -1,0 +1,9 @@
+{
+  "user10": {
+    "name": "Jacob",
+    "password": "pas",
+    "isAdmin": "true",
+    "id": 10,
+    "thatguy": "true"
+  }
+}

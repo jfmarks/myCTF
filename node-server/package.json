@@ -1,0 +1,22 @@
+{
+  "name": "myserver",
+  "version": "1.0.0",
+  "description": "Cisc 474 exercise 4",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Jacob Marks",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node": "^21.2.0"
+  }
+}

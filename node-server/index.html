@@ -1,0 +1,125 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <h1>System Users</h1>
+    <div id="users"></div>
+    <div>
+        <h2>Add User</h2>
+        <table>
+            <tr><td>Name: </td><td> <input id="addUserName"></td></tr>
+            <tr><td>Password: </td><td> <input id="addUserPassword"></td></tr>
+            <tr><td>ID: </td><td> <input id="addUserId" type="number"></td></tr>
+            <tr><td><button id="addButton" type="button">Add User</button></td></tr>
+        </table>
+        <h2>Login</h2>
+        <table>
+            <tr><td>Name: </td><td> <input id="loginName"></td></tr>
+            <tr><td>Password: </td><td> <input id="loginPass"></td></tr>
+            <tr><td><button id="loginButton" type="button">Login</button></td></tr>
+        </table>
+        <h2>change or add something to your profile</h2>
+        <table>
+            <tr><td>ID: </td><td> <input id="changeID" type="number"></td></tr>
+            <tr><td>attribute: </td><td> <input id="changeKey"></td></tr>
+            <tr><td>value: </td><td> <input id="changeValue"></td></tr>
+            <tr><td><button id="changeButton" type="button">Make changes</button></td></tr>
+        </table>
+    </div>
+    <div>
+        <h2>Refresh users</h2>
+        <td><button id="refreshButton" type="button">Refresh User</button></td>
+    </div>
+    <h2>Logged in as:</h2>
+    <div id="loggedIn" loggedIn="false"></div>
+    <h2>flag:</h2>
+    <!--only admins can access the flag🤔-->
+    <table>
+        <tr><td><button id="getFlag" type="button">get Flag!</button><div id="flag"></div></td></tr>
+    </table>
+
+    <script type="text/javascript">
+        $('#getFlag').click(function(){
+            if (document.getElementById("loggedIn").getAttribute("loggedIn") === "true") {
+                $.ajax({
+                    url: "/api/v1/getFlag?name=" +document.getElementById("loginName").value
+                    + "&password=" + document.getElementById("loginPass").value,
+                    type: 'GET',
+                    success: function(result) {
+                    document.getElementById("flag").innerText = result;
+                    }
+                });
+            }
+        })
+
+        $('#addButton').click(function(){
+            $.ajax({
+                url: "/api/v1/addUser?user="+document.getElementById("addUserId").value
+                + "&name=" +document.getElementById("addUserName").value
+                + "&password=" + document.getElementById("addUserPassword").value,
+                type: 'POST',
+                success: function(result) {
+                console.log("Add Returned");
+                console.log(result);
+                document.getElementById("users").innerHTML = "<pre>"+JSON.stringify(result, null,
+                    2)+"</pre>";
+                }
+            });
+        })
+
+
+        $('#loginButton').click(function(){
+            $.ajax({
+                url: "/api/v1/login?name=" +document.getElementById("loginName").value
+                + "&password=" + document.getElementById("loginPass").value,
+                type: 'GET',
+                success: function(result) {
+                console.log("display");
+                console.log(result);
+                document.getElementById("loggedIn").setAttribute("loggedIn", "true")
+                document.getElementById("loggedIn").innerHTML = "<pre>"+JSON.stringify(result, null,
+                    2)+"</pre>";
+                }
+            });
+        })
+
+        $('#changeButton').click(function(){
+            if (document.getElementById("loggedIn").getAttribute("loggedIn") === "true") {
+                $.ajax({
+                    url: "/api/v1/change?name=" +document.getElementById("loginName").value
+                    + "&password=" + document.getElementById("loginPass").value
+                    + "&changeKey=" + document.getElementById("changeKey").value
+                    + "&changeValue=" + document.getElementById("changeValue").value
+                    + "&changeID=" + document.getElementById("changeID").value,
+                    type: 'POST',
+                    success: function(result) {
+                    console.log(result);
+                    document.getElementById("loggedIn").innerHTML = "<pre>"+JSON.stringify(result, null,
+                    2)+"</pre>";
+                    }
+                });
+            }
+        })
+       
+        $('#refreshButton').click(function(){
+            $.ajax({
+                url: '/api/v1/listUsers',
+                type: 'GET',
+                success: function(result) {
+                    document.getElementById("users").innerHTML = "<pre>"+JSON.stringify(JSON.parse(result), null,2)+"</pre>";
+                }
+            });
+        })
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/v1/listUsers',
+                type: 'GET',
+                success: function(result) {
+                    document.getElementById("users").innerHTML = "<pre>"+JSON.stringify(JSON.parse(result), null,2)+"</pre>";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
